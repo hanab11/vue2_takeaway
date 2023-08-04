@@ -1,8 +1,9 @@
 # vue2_takeaway
 ---
-// 2023年8月3日 day1
+// 2023年8月3~4日 day1
 1. 小笔记做完
 2. vue create vue2_takeaway
+3. 安排目录结构
 
 ---
 ## 1.描述

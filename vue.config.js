@@ -19,5 +19,14 @@ module.exports = defineConfig({
         ws: true //支持websocket
       }
     }
+  },
+
+  //配置css预处理器less
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    }
   }
 });
