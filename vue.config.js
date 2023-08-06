@@ -21,12 +21,12 @@ module.exports = defineConfig({
     }
   },
 
-  //配置css预处理器less
-  css: {
+  //配置css-loader暂放
+  /* css: {
     loaderOptions: {
       less: {
         javascriptEnabled: true
       }
     }
-  }
+  } */
 });
