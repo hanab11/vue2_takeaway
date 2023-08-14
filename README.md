@@ -1,7 +1,27 @@
 # vue2_takeaway
 ---
 
-后端短信接口处理完，只能给测试手机号发送1~4位数字短信验证码
+## 从0开始创建项目和安装依赖，解决坑的过程
+```
+vue create vue2_takeaway
+npm i -g serve（全局已安装）
+npm i --save less
+npm i --save less-loader@6（高低版本都不行）
+npm i --save vue-router@3
+npm i --save vuex@3
+npm i --save vue-lazyload@1（高版本报错）
+npm i --save axios
+npm i --save mint-ui
+npm i --save-dev babel-plugin-component
+npm i --save swiper@3.4.2
+npm i --save better-scroll
+npm i --save mockjs
+
+安装MongoDB，启动服务（并修改系统环境变量到/bin；6版本没有shell工具选4版；图形化的Compass另行安装，否则会卡住）
+npm i --save mongoose（后端已安装）
+安装PostMan（测试接口）
+
+```
 
 ---
 ## 1.描述
