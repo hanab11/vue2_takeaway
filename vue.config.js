@@ -15,17 +15,17 @@ module.exports = defineConfig({
     }
   },
 
-  // 解决less定义全局变量问题 less-loader6之后
+  // less-loader6之后
   css: {
     loaderOptions: {
       less: {
         lessOptions: {
-          javascriptEnabled: true,
+          javascriptEnabled: true, // 解决less定义全局变量问题
         },
       },
     },
   },
-  // 解决less定义全局变量问题 less-loader6之前
+  // less-loader6之前
   /* css: {
     loaderOptions: {
       less: {
