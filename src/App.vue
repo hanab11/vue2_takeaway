@@ -2,6 +2,7 @@
   <div class="app">
     <!-- 已经有默认的路由，可直接写routerview -->
     <router-view></router-view>
+    <!-- 根据路由器配置显示底部导航 -->
     <FooterGuide v-show="$route.meta.showFooter" />
   </div>
 </template>
@@ -13,13 +14,13 @@ import FooterGuide from './components/FooterGuide.vue'
 export default {
   name: 'App',
   components: { FooterGuide },
-  methods: {
-    ...mapActions(['getAddress', 'getUserInfo']),
-  },
   mounted() {
     // this.$store.dispatch('getAddress')
     this.getAddress()
     this.getUserInfo()
+  },
+  methods: {
+    ...mapActions(['getAddress', 'getUserInfo']),
   },
 }
 </script>
