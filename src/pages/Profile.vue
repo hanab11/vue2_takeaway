@@ -1,25 +1,20 @@
 <template>
   <section class="profile">
-    <HeaderTop title="我的" />
+    <HeaderTop title="我 的" />
     <section class="profile-number">
-      <router-link
-        :to="userInfo._id ? '/userinfo' : '/login'"
-        class="profile-link"
-      >
+      <!-- 动态跳转路由，根据userInfo -->
+      <router-link :to="userInfo._id ? '/userinfo' : '/login'" class="profile-link">
         <div class="profile_image">
           <i class="iconfont icon-person"></i>
         </div>
         <div class="user-info">
-          <p class="user-info-top" v-if="!userInfo.phone">
-            {{ userInfo.name || '登录/注册' }}
-          </p>
+          <p class="user-info-top" v-if="!userInfo.phone">{{ userInfo.name || '登录/注册' }}</p>
           <p>
             <span class="user-icon">
-              <i class="iconfont icon-shouji icon-mobile"></i>
+              <i class="iconfont icon-shouji"></i>
             </span>
-            <span class="icon-mobile-number">{{
-              userInfo.phone || '暂无绑定手机号'
-            }}</span>
+            <span>&nbsp;</span>
+            <span class="icon-mobile-number">{{ userInfo.phone || '暂无绑定手机号' }}</span>
           </p>
         </div>
         <span class="arrow">
@@ -34,7 +29,7 @@
           <span class="info_data_bottom">我的余额</span>
         </a>
         <a href="javascript:" class="info_data_link">
-          <span class="info_data_top"><span>0</span>个</span>
+          <span class="info_data_top"><span>6</span>个</span>
           <span class="info_data_bottom">我的优惠</span>
         </a>
         <a href="javascript:" class="info_data_link">
@@ -68,13 +63,13 @@
           </span>
         </div>
       </a>
-      <!-- 硅谷外卖会员卡 -->
+      <!-- 蜂鸟外卖会员卡 -->
       <a href="javascript:" class="my_order">
         <span>
           <i class="iconfont icon-vip"></i>
         </span>
         <div class="my_order_div">
-          <span>硅谷外卖会员卡</span>
+          <span>蜂鸟外卖会员卡</span>
           <span class="my_order_icon">
             <i class="iconfont icon-jiantou1"></i>
           </span>
@@ -97,13 +92,7 @@
     </section>
 
     <section class="profile_my_order border-1px">
-      <mt-button
-        type="danger"
-        style="width: 100%"
-        v-if="userInfo._id"
-        @click="logout"
-        >退出登陆</mt-button
-      >
+      <mt-button type="danger" style="width: 100%" v-if="userInfo._id" @click="logout">退出登陆</mt-button>
     </section>
   </section>
 </template>
@@ -113,26 +102,26 @@ import { mapState } from 'vuex'
 import { MessageBox, Toast } from 'mint-ui'
 import HeaderTop from '../components/HeaderTop.vue'
 export default {
+  components: {
+    HeaderTop,
+  },
   computed: {
     ...mapState(['userInfo']),
   },
   methods: {
     logout() {
-      MessageBox.confirm('确认退出吗?').then(
+      MessageBox.confirm('确认退出吗？').then(
         (action) => {
-          // 请求退出
+          // 异步请求退出
           this.$store.dispatch('logout')
-          Toast('登出完成')
+          Toast('登出完成！') // 在用户界面打印
+          console.log('点击了确认', action)
         },
-        (action) => {
+        () => {
           console.log('点击了取消')
         }
       )
     },
-  },
-
-  components: {
-    HeaderTop,
   },
 }
 </script>
@@ -204,7 +193,7 @@ export default {
         border-radius: 50%;
         overflow: hidden;
         vertical-align: top;
-        .icon-user {
+        .icon-person {
           background: #e4e4e4;
           font-size: 62px;
         }
@@ -226,7 +215,7 @@ export default {
             margin-right: 5px;
             width: 20px;
             height: 20px;
-            .icon-mobile {
+            .icon-shouji {
               font-size: 30px;
               vertical-align: text-top;
             }
@@ -322,6 +311,7 @@ export default {
           color: #02a774;
         }
         .icon-jifen {
+          font-size: 32px;
           color: #ff5f3e;
         }
         .icon-vip {

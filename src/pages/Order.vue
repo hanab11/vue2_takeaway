@@ -1,6 +1,6 @@
 <template>
   <section class="order">
-    <HeaderTop title="订单列表" />
+    <HeaderTop title="订 单 列 表" />
     <section class="order_no_login">
       <img src="../assets/images/person.png" />
       <h3>登录后查看外卖订单</h3>
@@ -12,9 +12,7 @@
 <script>
 import HeaderTop from '../components/HeaderTop.vue'
 export default {
-  components: {
-    HeaderTop,
-  },
+  components: { HeaderTop },
 }
 </script>
 

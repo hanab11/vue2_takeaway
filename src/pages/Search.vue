@@ -1,25 +1,15 @@
 <template>
   <section class="search">
-    <HeaderTop title="搜索" />
+    <HeaderTop title="搜 索" />
     <form class="search_form" @submit.prevent="search">
-      <input
-        type="search"
-        placeholder="请输入商家名称"
-        class="search_input"
-        v-model="keyword"
-      />
+      <input type="search" placeholder="请输入商家名称" class="search_input" v-model="keyword" />
       <input type="submit" class="search_submit" />
     </form>
     <section class="list" v-if="!noSearchShops">
       <ul class="list_container">
-        <!--:to="'/shop?id='+item.id"-->
-        <router-link
-          :to="{ path: '/shop', query: { id: item.id } }"
-          tag="li"
-          v-for="item in searchShops"
-          :key="item.id"
-          class="list_li"
-        >
+        <!-- :to="'/shop?id='+item.id" -->
+        <router-link :to="{ path: '/shop', query: { id: item.id } }" tag="li" v-for="item in searchShops" :key="item.id"
+          class="list_li">
           <section class="item_left">
             <img :src="imgBaseUrl + item.image_path" class="restaurant_img" />
           </section>
@@ -30,8 +20,7 @@
               </p>
               <p>月售 {{ item.month_sales || item.recent_order_num }} 单</p>
               <p>
-                {{ item.delivery_fee || item.float_minimum_order_amount }}
-                元起送 / 距离{{ item.distance }}
+                {{ item.delivery_fee || item.float_minimum_order_amount }} 元起送 / 距离{{ item.distance }}
               </p>
             </div>
           </section>
@@ -47,6 +36,7 @@
 import { mapState } from 'vuex'
 import HeaderTop from '../components/HeaderTop.vue'
 export default {
+  components: { HeaderTop },
   data() {
     return {
       keyword: '',
@@ -54,22 +44,9 @@ export default {
       noSearchShops: false,
     }
   },
-
   computed: {
     ...mapState(['searchShops']),
   },
-
-  methods: {
-    search() {
-      // 得到搜索关键字
-      const keyword = this.keyword.trim()
-      // 进行搜索
-      if (keyword) {
-        this.$store.dispatch('searchShops', keyword)
-      }
-    },
-  },
-
   watch: {
     searchShops(value) {
       if (!value.length) {
@@ -81,9 +58,15 @@ export default {
       }
     },
   },
-
-  components: {
-    HeaderTop,
+  methods: {
+    search() {
+      // 得到搜索关键字
+      const keyword = this.keyword.trim()
+      // 进行搜索
+      if (keyword) {
+        this.$store.dispatch('searchShops', keyword)
+      }
+    },
   },
 }
 </script>
