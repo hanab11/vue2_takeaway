@@ -1,103 +1,51 @@
 <template>
   <section class="loginContainer">
     <div class="loginInner">
+      <!-- 动态绑定样式，切换登录方式 -->
       <div class="login_header">
-        <h2 class="login_logo">硅谷外卖</h2>
+        <h2 class="login_logo">蜂鸟外送</h2>
         <div class="login_header_title">
-          <a
-            href="javascript:;"
-            :class="{ on: loginWay }"
-            @click="loginWay = true"
-            >短信登录
-          </a>
-          <a
-            href="javascript:;"
-            :class="{ on: !loginWay }"
-            @click="loginWay = false"
-            >密码登录
-          </a>
+          <a href="javascript:;" :class="{ on: loginWay }" @click="loginWay = true">短信登录</a>
+          <a href="javascript:;" :class="{ on: !loginWay }" @click="loginWay = false">密码登录</a>
         </div>
       </div>
       <div class="login_content">
+        <!-- 表单提交阻止默认事件 -->
         <form @submit.prevent="login">
+          <!-- 短信登录，两个容器对同一个样式on动态绑定，实现切换容器 -->
           <div :class="{ on: loginWay }">
             <section class="login_message">
-              <input
-                type="tel"
-                maxlength="11"
-                placeholder="手机号"
-                v-model="phone"
-              />
-              <button
-                :disabled="!rightPhone"
-                class="get_verification"
-                :class="{ right_phone: rightPhone }"
-                @click.prevent="getCode"
-              >
+              <input type="tel" maxlength="11" placeholder="手机号" v-model="phone" />
+              <button :disabled="!rightPhone" class="get_verification" :class="{ right_phone: rightPhone }"
+                @click.prevent="getCode">
                 {{ computeTime > 0 ? `已发送(${computeTime}s)` : '获取验证码' }}
               </button>
             </section>
             <section class="login_verification">
-              <input
-                type="tel"
-                maxlength="8"
-                placeholder="验证码"
-                v-model="code"
-              />
+              <input type="tel" maxlength="8" placeholder="验证码" v-model="code" />
             </section>
             <section class="login_hint">
-              温馨提示：未注册硅谷外卖帐号的手机号，登录时将自动注册，且代表已同意
-              <a href="javascript:;">《用户服务协议》</a>
+              温馨提示：未注册蜂鸟外送的手机号，登录时将自动注册，且代表已同意<a href="javascript:;">用户服务协议</a>
             </section>
           </div>
+          <!-- 密码登录，两个容器对同一个样式on动态绑定，实现切换容器 -->
           <div :class="{ on: !loginWay }">
             <section>
               <section class="login_message">
-                <input
-                  type="text"
-                  maxlength="11"
-                  placeholder="手机/邮箱/用户名"
-                  v-model="name"
-                />
+                <input type="text" maxlength="11" placeholder="手机/邮箱/用户名" v-model="name" />
               </section>
               <section class="login_verification">
-                <input
-                  type="text"
-                  maxlength="8"
-                  placeholder="密码"
-                  v-if="showPwd"
-                  v-model="pwd"
-                />
-                <input
-                  type="password"
-                  maxlength="8"
-                  placeholder="密码"
-                  v-else
-                  v-model="pwd"
-                />
-                <div
-                  class="switch_button"
-                  :class="showPwd ? 'on' : 'off'"
-                  @click="showPwd = !showPwd"
-                >
+                <input type="text" maxlength="8" placeholder="密码" v-if="showPwd" v-model="pwd" />
+                <input type="password" maxlength="8" placeholder="密码" v-else v-model="pwd" />
+                <div class="switch_button" :class="showPwd ? 'on' : 'off'" @click="showPwd = !showPwd">
                   <div class="switch_circle" :class="{ right: showPwd }"></div>
                   <span class="switch_text">{{ showPwd ? 'abc' : '...' }}</span>
                 </div>
               </section>
               <section class="login_message">
-                <input
-                  type="text"
-                  maxlength="11"
-                  placeholder="验证码"
-                  v-model="captcha"
-                />
-                <img
-                  class="get_verification"
-                  src="http://localhost:4000/captcha"
-                  alt="captcha"
-                  @click="getCaptcha"
-                  ref="captcha"
-                />
+                <input type="text" maxlength="11" placeholder="验证码" v-model="captcha" />
+                <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha"
+                  ref="captcha" />
               </section>
             </section>
           </div>
@@ -105,11 +53,12 @@
         </form>
         <a href="javascript:;" class="about_us">关于我们</a>
       </div>
+      <!-- 退出 -->
       <a href="javascript:" class="go_back" @click="$router.back()">
         <i class="iconfont icon-jiantou2"></i>
       </a>
     </div>
-
+    <!-- 提示组件 -->
     <AlertTip :alertText="alertText" v-show="alertShow" @closeTip="closeTip" />
   </section>
 </template>
@@ -118,9 +67,10 @@
 import AlertTip from '../components/AlertTip.vue'
 import { reqSendCode, reqSmsLogin, reqPwdLogin } from '../api'
 export default {
+  components: { AlertTip },
   data() {
     return {
-      loginWay: false, // true代表短信登陆, false代表密码
+      loginWay: true, // true代表短信登陆, false代表密码
       computeTime: 0, // 计时的时间
       showPwd: false, // 是否显示密码
       phone: '', // 手机号
@@ -132,50 +82,53 @@ export default {
       alertShow: false, // 是否显示警告框
     }
   },
-
   computed: {
     rightPhone() {
       return /^1\d{10}$/.test(this.phone)
     },
   },
-
   methods: {
     // 异步获取短信验证码
     async getCode() {
-      // 如果当前没有计时
+      // 如果当前没有计时，完成状态
       if (!this.computeTime) {
         // 启动倒计时
         this.computeTime = 30
         this.intervalId = setInterval(() => {
           this.computeTime--
           if (this.computeTime <= 0) {
-            // 停止计时
-            clearInterval(this.intervalId)
+            clearInterval(this.intervalId) // 停止计时
           }
         }, 1000)
 
-        // 发送ajax请求(向指定手机号发送验证码短信)
+        // 发送ajax请求，向指定手机号发送验证码短信
         const result = await reqSendCode(this.phone)
+        // 成功时手机有短信，判断错误码
         if (result.code === 1) {
           // 显示提示
           this.showAlert(result.msg)
           // 停止计时
           if (this.computeTime) {
             this.computeTime = 0
-            clearInterval(this.intervalId)
+            clearInterval(this.intervalId) // 获取异步定时器id需要用this.
             this.intervalId = undefined
           }
         }
       }
     },
-
+    // 封装警告
     showAlert(alertText) {
       this.alertShow = true
       this.alertText = alertText
     },
+    // 关闭警告
+    closeTip() {
+      this.alertShow = false
+      this.alertText = ''
+    },
     // 异步登陆
     async login() {
-      let result
+      let result // 准备result存储异步登录的结果
       // 前台表单验证
       if (this.loginWay) {
         // 短信登陆
@@ -184,9 +137,9 @@ export default {
           // 手机号不正确
           this.showAlert('手机号不正确')
           return
-        } else if (!/^\d{6}$/.test(code)) {
-          // 验证必须是6位数字
-          this.showAlert('验证必须是6位数字')
+        } else if (!/^\d{4}$/.test(code)) {
+          // 验证必须是4位数字
+          this.showAlert('验证必须是4位数字')
           return
         }
         // 发送ajax请求短信登陆
@@ -194,15 +147,15 @@ export default {
       } else {
         // 密码登陆
         const { name, pwd, captcha } = this
-        if (!this.name) {
+        if (!name) {
           // 用户名必须指定
           this.showAlert('用户名必须指定')
           return
-        } else if (!this.pwd) {
+        } else if (!pwd) {
           // 密码必须指定
           this.showAlert('密码必须指定')
           return
-        } else if (!this.captcha) {
+        } else if (!captcha) {
           // 验证码必须指定
           this.showAlert('验证码必须指定')
           return
@@ -217,11 +170,10 @@ export default {
         clearInterval(this.intervalId)
         this.intervalId = undefined
       }
-
       // 根据结果数据处理
       if (result.code === 0) {
-        const user = result.data
-        // 将user保存到vuex的state
+        const user = result.data // 成功的data就是user数据
+        // 同步保存user到vuex的state
         this.$store.dispatch('recordUser', user)
         // 去个人中心界面
         this.$router.replace('/profile')
@@ -233,21 +185,12 @@ export default {
         this.showAlert(msg)
       }
     },
-    // 关闭警告框
-    closeTip() {
-      this.alertShow = false
-      this.alertText = ''
-    },
-    // 获取一个新的图片验证码
+    // 获取新的图片验证码，通过src，不用发ajax请求
     getCaptcha() {
-      // 每次指定的src要不一样
+      // 重复地址不会发请求，跟一个time值保证每次都不同
       this.$refs.captcha.src =
         'http://localhost:4000/captcha?time=' + Date.now()
     },
-  },
-
-  components: {
-    AlertTip,
   },
 }
 </script>
