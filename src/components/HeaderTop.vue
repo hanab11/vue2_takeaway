@@ -1,18 +1,19 @@
 <template>
   <header class="header">
+    <!-- 左插槽 -->
     <slot name="left"></slot>
+    <!-- 插值标题 -->
     <span class="header_title">
       <span class="header_title_text ellipsis">{{ title }}</span>
     </span>
+    <!-- 右插槽 -->
     <slot name="right"></slot>
   </header>
 </template>
 
 <script>
 export default {
-  props: {
-    title: String,
-  },
+  props: { title: String },
 }
 </script>
 
@@ -33,7 +34,7 @@ export default {
     width: 10%;
     height: 50%;
     .icon-search {
-      font-size: 25px;
+      font-size: 20px;
       color: #fff;
     }
   }
@@ -59,6 +60,10 @@ export default {
     top: 50%;
     transform: translateY(-50%);
     .header_login_text {
+      color: #fff;
+    }
+    .icon-person {
+      font-size: 20px;
       color: #fff;
     }
   }
