@@ -7,7 +7,8 @@
     </form>
     <section class="list" v-if="!noSearchShops">
       <ul class="list_container">
-        <!-- :to="'/shop?id='+item.id" -->
+        <!-- :to="'/shop?id='+item.id" 全路径 -->
+        <!-- tag="li"专门用于形成列表形式的路由路径，默认tag是a -->
         <router-link :to="{ path: '/shop', query: { id: item.id } }" tag="li" v-for="item in searchShops" :key="item.id"
           class="list_li">
           <section class="item_left">
