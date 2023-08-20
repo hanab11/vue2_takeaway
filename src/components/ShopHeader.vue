@@ -1,6 +1,7 @@
 <template>
   <div class="shop-header">
-    <nav class="shop-nav" :style="{ backgroundImage: `url(${info.bgImg})` }">
+    <!-- url(xxx)等效于get请求，异步数据没到时，报404错误，最好v-if，有值才加载才显示 -->
+    <nav class="shop-nav" v-if="info.bgImg" :style="{ backgroundImage: `url(${info.bgImg})` }">
       <a class="back" @click="$router.back()">
         <i class="iconfont icon-arrow_left"></i>
       </a>
@@ -26,20 +27,15 @@
         </div>
       </div>
     </div>
-
-    <div
-      class="shop-header-discounts"
-      v-if="info.supports"
-      @click="toggleSupportShow"
-    >
+    <!-- 三级取值，最好v-if，有值才加载才显示 -->
+    <div class="shop-header-discounts" v-if="info.supports" @click="toggleSupportShow">
       <div class="discounts-left">
+        <!-- 请求到的type数据是下标形式，用数组保存样式，用传入的下标动态绑定样式，[0]展示首个数据 -->
         <div class="activity" :class="supportClasses[info.supports[0].type]">
           <span class="content-tag">
             <span class="mini-tag">{{ info.supports[0].name }}</span>
           </span>
-          <span class="activity-content ellipsis">{{
-            info.supports[0].content
-          }}</span>
+          <span class="activity-content ellipsis">{{ info.supports[0].content }}</span>
         </div>
       </div>
       <div class="discounts-right">{{ info.supports.length }}个优惠</div>
@@ -86,6 +82,7 @@
             <span class="iconfont icon-close"></span>
           </div>
         </div>
+        <!-- shop简介遮罩，点击遮罩控制显示隐藏 @click="toggleShopShow" -->
         <div class="brief-modal-cover"></div>
       </div>
     </transition>
@@ -94,13 +91,11 @@
       <div class="activity-sheet" v-show="supportShow">
         <div class="activity-sheet-content">
           <h2 class="activity-sheet-title">优惠活动</h2>
+          <!-- 活动列表 -->
           <ul class="list">
-            <li
-              class="activity-item"
-              v-for="(support, index) in info.supports"
-              :key="index"
-              :class="supportClasses[support.type]"
-            >
+            <!-- 请求到的type数据是下标形式，用数组保存样式，用传入的下标动态绑定样式 -->
+            <li class="activity-item" v-for="(support, index) in info.supports" :key="index"
+              :class="supportClasses[support.type]">
               <span class="content-tag">
                 <span class="mini-tag">{{ support.name }}</span>
               </span>
@@ -111,6 +106,7 @@
             <span class="iconfont icon-close"></span>
           </div>
         </div>
+        <!-- shop活动遮罩，点击遮罩控制显示隐藏 @click="toggleShopShow" -->
         <div class="activity-sheet-cover"></div>
       </div>
     </transition>
@@ -123,6 +119,7 @@ import { mapState } from 'vuex'
 export default {
   data() {
     return {
+      // supports的type属性的值是 0 1 2，对应样式green red orange，可作index传入
       supportClasses: ['activity-green', 'activity-red', 'activity-orange'],
       shopShow: false,
       supportShow: false,
@@ -131,12 +128,10 @@ export default {
   computed: {
     ...mapState(['info']),
   },
-
   methods: {
     toggleShopShow() {
       this.shopShow = !this.shopShow
     },
-
     toggleSupportShow() {
       this.supportShow = !this.supportShow
     },
@@ -156,7 +151,7 @@ export default {
   .shop-nav {
     background-size: cover;
     background-repeat: no-repeat;
-    height: 40px;
+    height: 50px; // 修改高度，优化背景显示效果
     padding: 5px 10px;
     position: relative;
     &::before {
@@ -172,7 +167,7 @@ export default {
       position: absolute;
       top: 10px;
       left: 0;
-      .icon-left {
+      .icon-arrow_left {
         display: block;
         padding: 5px;
         font-size: 20px;
@@ -181,7 +176,7 @@ export default {
     }
   }
   .shop-content {
-    padding: 30px 20px 5px 20px;
+    padding: 20px 20px 5px 20px; // 修改高度，优化背景显示效果（从上开始顺时针）
     position: relative;
     display: flex;
     background: #fff;
@@ -358,13 +353,13 @@ export default {
     z-index: 52;
     flex-direction: column;
     color: #333;
-    &.fade-enter-active,
-    &.fade-leave-active {
-      transition: opacity 0.5s;
-    }
     &.fade-enter,
     &.fade-leave-to {
-      opacity: 0;
+      opacity: 0; // 进入和退出时状态，完全透明
+    }
+    &.fade-enter-active,
+    &.fade-leave-active {
+      transition: opacity 0.5s; // 进入和退出，时间
     }
     .brief-modal-cover {
       position: absolute;
@@ -482,6 +477,14 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 99;
+    &.fade-enter,
+    &.fade-leave-to {
+      opacity: 0;
+    }
+    &.fade-enter-active,
+    &.fade-leave-active {
+      transition: opacity 0.5s;
+    }
     .activity-sheet-content {
       position: absolute;
       background-color: #f5f5f5;
