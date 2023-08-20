@@ -4,6 +4,7 @@
       <div class="image-header">
         <img v-lazy="food.image" />
         <p class="foodpanel-desc">{{ food.info }}</p>
+        <!-- 退出按钮 -->
         <div class="back" @click="toggleShow">
           <i class="iconfont icon-arrow_left"></i>
         </div>
@@ -18,38 +19,32 @@
           <span class="now">￥{{ food.price }}</span>
           <span class="old" v-show="food.oldPrice">￥{{ food.oldPrice }}</span>
         </div>
+        <!-- 购物车控件 -->
         <div class="cartcontrol-wrapper">
           <CartControl :food="food" />
         </div>
       </div>
     </div>
+    <!-- food遮罩，点击遮罩控制显示隐藏 -->
     <div class="food-cover" @click="toggleShow"></div>
   </div>
 </template>
-
 
 <script>
 import CartControl from './CartControl.vue'
 
 export default {
-  props: {
-    food: Object,
-  },
-
+  components: { CartControl },
+  props: { food: Object },
   data() {
     return {
       isShow: false,
     }
   },
-
   methods: {
     toggleShow() {
       this.isShow = !this.isShow
     },
-  },
-
-  components: {
-    CartControl,
   },
 }
 </script>
