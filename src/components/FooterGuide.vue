@@ -1,44 +1,25 @@
 <template>
   <div class="footer_guide">
     <!-- :绑定class时，思考是否用对象语法 {类名确定:布尔值不确定有还是没有} -->
-    <span
-      class="guide_item"
-      :class="{ on: '/msite' === $route.path }"
-      @click="goTo('/msite')"
-    >
+    <span class="guide_item" :class="{ on: '/msite' === $route.path }" @click="goTo('/msite')">
       <span class="item_icon">
         <i class="iconfont icon-waimai"></i>
       </span>
       <span>外卖</span>
     </span>
-    <a
-      href="javascript:;"
-      class="guide_item"
-      :class="{ on: '/search' === $route.path }"
-      @click="goTo('/search')"
-    >
+    <a href="javascript:;" class="guide_item" :class="{ on: '/search' === $route.path }" @click="goTo('/search')">
       <span class="item_icon">
         <i class="iconfont icon-search"></i>
       </span>
       <span>搜索</span>
     </a>
-    <a
-      href="javascript:;"
-      class="guide_item"
-      :class="{ on: '/order' === $route.path }"
-      @click="goTo('/order')"
-    >
+    <a href="javascript:;" class="guide_item" :class="{ on: '/order' === $route.path }" @click="goTo('/order')">
       <span class="item_icon">
         <i class="iconfont icon-dingdan"></i>
       </span>
       <span>订单</span>
     </a>
-    <a
-      href="javascript:;"
-      class="guide_item"
-      :class="{ on: '/profile' === $route.path }"
-      @click="goTo('/profile')"
-    >
+    <a href="javascript:;" class="guide_item" :class="{ on: '/profile' === $route.path }" @click="goTo('/profile')">
       <span class="item_icon">
         <i class="iconfont icon-geren"></i>
       </span>
@@ -49,17 +30,16 @@
 
 <script>
 export default {
-  name: 'FooterGuide',
   methods: {
-    //编程式路由push、repalce目的是代替router_link to，push和replace参数传入to的对象
+    // 编程式路由push、repalce，目的是代替router_link to，replace参数传入to的对象
     goTo(path) {
-      this.$router.replace(path) //replace不带历史记录跳转路由
+      this.$router.replace(path) // replace不带历史记录跳转路由
     },
   },
 }
 </script>
 
-<style lang="less" >
+<style lang="less">
 @import '../assets/less/mixins.less';
 
 .footer_guide {
