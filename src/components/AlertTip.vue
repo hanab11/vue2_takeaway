@@ -5,6 +5,7 @@
         <span></span>
         <span></span>
       </div>
+      <!-- 提示内容 -->
       <p class="tip_text">{{ alertText }}</p>
       <div class="confrim" @click="closeTip">确认</div>
     </section>
@@ -13,13 +14,10 @@
 
 <script>
 export default {
-  props: {
-    alertText: String,
-  },
-
+  props: { alertText: String },
   methods: {
     closeTip() {
-      // 分发自定义事件(事件名: closeTip)
+      // 触发自定义事件closeTip
       this.$emit('closeTip')
     },
   },
